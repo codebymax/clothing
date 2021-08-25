@@ -7,11 +7,43 @@ from fastapi.responses import JSONResponse
 
 from models import ItemModel
 from models import UpdateItemModel
+from models import OutfitModel
 
 uri = "mongodb+srv://rootUser:iowastatemongo@main-xz1r5.mongodb.net/clothingDB?retryWrites=true&w=majority"
 client = motor.motor_asyncio.AsyncIOMotorClient(uri)
 db = client.clothingDB
 app = FastAPI()
+
+
+@app.post("/outfit", response_description="Add a new outfit", response_model=OutfitModel)
+async def add_outfit(outfit: OutfitModel = Body(...)):
+    outfit = jsonable_encoder(outfit)
+    new_outfit = await db["outfit"].insert_one(outfit)
+    created_outfit = await db["outfit"].find_one({"_id": new_outfit.inserted_id})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_outfit)
+
+
+@app.get("/outfit", response_description="List all outfits", response_model=List[OutfitModel])
+async def get_outfits():
+    outfits = await db["outfit"].find().to_list(1000)
+    return outfits
+
+
+@app.get("/outfit/{id}", response_description="Get a single outfit", response_model=OutfitModel)
+async def get_item(id: str):
+    if (outfit := await db["outfit"].find_one({"_id": id})) is not None:
+        return outfit
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Outfit {id} not found")
+
+
+@app.delete("/outfit/{id}", response_description="Delete an outfit")
+async def delete_item(id: str):
+    delete_result = await db["outfit"].delete_one({"_id": id})
+
+    if delete_result.deleted_count == 1:
+        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Outfit {id} not found")
 
 
 @app.post("/", response_description="Add a new item", response_model=ItemModel)
