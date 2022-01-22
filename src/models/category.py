@@ -3,7 +3,7 @@ from typing import Optional
 from bson import ObjectId
 from pydantic import BaseModel, Field
 
-from .misc import PyObjectId
+from .object import PyObjectId
 
 
 class CategoryModel(BaseModel):

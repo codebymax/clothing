@@ -1,23 +1,16 @@
 from typing import List
-import configparser
 
-import motor.motor_asyncio
-from fastapi import APIRouter, Body, HTTPException, status, Depends
+from fastapi import APIRouter, Body, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from ..models.outfit import OutfitModel
 from ..models.outfit import UpdateOutfitModel
-from ..dependencies import get_token_header
+from ..utils import db
 
-config = configparser.ConfigParser()
-config.read("config.ini")
-client = motor.motor_asyncio.AsyncIOMotorClient(config["DEFAULT"]["mongo_uri"])
-db = client.clothingDB
 router = APIRouter(
     prefix="/outfit",
     tags=["outfit"],
-    dependencies=[Depends(get_token_header)],
 )
 
 

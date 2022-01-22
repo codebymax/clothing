@@ -1,18 +1,13 @@
 from typing import List
-import configparser
 
-import motor.motor_asyncio
 from fastapi import APIRouter, Body, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from ..models.category import CategoryModel
 from ..models.category import UpdateCategoryModel
+from ..utils import db
 
-config = configparser.ConfigParser()
-config.read("config.ini")
-client = motor.motor_asyncio.AsyncIOMotorClient(config["DEFAULT"]["mongo_uri"])
-db = client.clothingDB
 router = APIRouter(
     prefix="/category",
     tags=["category"],

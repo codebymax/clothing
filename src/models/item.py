@@ -2,7 +2,7 @@ from bson import ObjectId
 from pydantic import BaseModel, Field
 from typing import Optional, List
 
-from .misc import PyObjectId
+from .object import PyObjectId
 
 
 class ItemModel(BaseModel):
@@ -13,6 +13,7 @@ class ItemModel(BaseModel):
     date_purchased: str = Field(...)
     price: float = Field(...)
     vendor: str = Field(...)
+    num_wears: int = Field(...)
     keywords: List[str] = Field(...)
 
     class Config:
@@ -27,6 +28,7 @@ class ItemModel(BaseModel):
                 "date_purchased": "01/01/2021",
                 "price": 32.40,
                 "vendor": "Uniqlo",
+                "num_wears": 5,
                 "keywords": ["short sleeve", "t-shirt", "blue", ]
             }
         }
@@ -43,6 +45,8 @@ class UpdateItemModel(BaseModel):
     date_purchased: Optional[str]
     price: Optional[float]
     vendor: Optional[str]
+    num_wears: Optional[str]
+    keywords: Optional[List[str]]
 
     class Config:
         arbitrary_types_allowed = True
