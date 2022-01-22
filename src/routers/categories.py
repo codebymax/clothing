@@ -1,4 +1,5 @@
 from typing import List
+import configparser
 
 import motor.motor_asyncio
 from fastapi import APIRouter, Body, HTTPException, status
@@ -8,8 +9,9 @@ from fastapi.responses import JSONResponse
 from ..models.category import CategoryModel
 from ..models.category import UpdateCategoryModel
 
-uri = "mongodb+srv://rootUser:kgAFR6FP5JBzlT2n@main-xz1r5.mongodb.net/clothingDB?retryWrites=true&w=majority"
-client = motor.motor_asyncio.AsyncIOMotorClient(uri)
+config = configparser.ConfigParser()
+config.read("config.ini")
+client = motor.motor_asyncio.AsyncIOMotorClient(config["DEFAULT"]["mongo_uri"])
 db = client.clothingDB
 router = APIRouter(
     prefix="/category",

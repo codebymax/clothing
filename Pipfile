@@ -9,6 +9,7 @@ uvicorn = "*"
 motor = "*"
 pydantic = "*"
 dnspython = "*"
+configparser = "*"
 
 [dev-packages]
 

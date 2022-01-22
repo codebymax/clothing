@@ -1,4 +1,5 @@
 from typing import List
+import configparser
 
 import motor.motor_asyncio
 from fastapi import APIRouter, Body, HTTPException, status, Depends
@@ -9,8 +10,9 @@ from ..models.item import ItemModel
 from ..models.item import UpdateItemModel
 from ..dependencies import get_token_header
 
-uri = "mongodb+srv://rootUser:kgAFR6FP5JBzlT2n@main-xz1r5.mongodb.net/clothingDB?retryWrites=true&w=majority"
-client = motor.motor_asyncio.AsyncIOMotorClient(uri)
+config = configparser.ConfigParser()
+config.read("config.ini")
+client = motor.motor_asyncio.AsyncIOMotorClient(config["DEFAULT"]["mongo_uri"])
 db = client.clothingDB
 router = APIRouter(
     prefix="/item",
