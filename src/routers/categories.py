@@ -57,11 +57,11 @@ async def update_item(_id: str, category: UpdateCategoryModel = Body(...)):
 
 
 # Delete a category by id
-@router.delete("/{_id}", response_description="Delete an item")
+@router.delete("/{_id}", response_description="Delete a category")
 async def delete_item(_id: str):
     delete_result = await db["category"].delete_one({"_id": _id})
 
     if delete_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Item {_id} not found")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Category {_id} not found")
