@@ -8,7 +8,7 @@ from .misc import PyObjectId
 class ItemModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     brand: str = Field(...)
-    type: str = Field(...)
+    category: str = Field(...)
     colors: List[str] = Field(...)
     date_purchased: str = Field(...)
     price: float = Field(...)
@@ -22,23 +22,23 @@ class ItemModel(BaseModel):
         schema_extra = {
             "example": {
                 "brand": "Uniqlo",
-                "type": "t-shirt",
+                "category": "t-shirt",
                 "colors": ["blue"],
-                "date_purchased": "12/11/1998",
+                "date_purchased": "01/01/2021",
                 "price": 32.40,
                 "vendor": "Uniqlo",
-                "keywords": ["short sleeve"]
+                "keywords": ["short sleeve", "t-shirt", "blue", ]
             }
         }
 
     def get_name(self):
         color = "multicolor" if len(self.colors) > 2 else " ".join(self.colors)
-        return self.brand + " " + color + " " + self.type
+        return self.brand + " " + color + " " + self.category
 
 
 class UpdateItemModel(BaseModel):
     brand: Optional[str]
-    type: Optional[str]
+    category: Optional[str]
     color: Optional[str]
     date_purchased: Optional[str]
     price: Optional[float]
@@ -50,7 +50,7 @@ class UpdateItemModel(BaseModel):
         schema_extra = {
             "example": {
                 "brand": "Uniqlo",
-                "type": "t-shirt",
+                "category": "t-shirt",
                 "colors": ["blue"],
                 "date_purchased": "12/11/1998",
                 "price": 32.40,

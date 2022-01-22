@@ -1,19 +1,21 @@
 from typing import List
 
 import motor.motor_asyncio
-from fastapi import APIRouter, Body, HTTPException, status
+from fastapi import APIRouter, Body, HTTPException, status, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from ..models.outfit import OutfitModel
 from ..models.outfit import UpdateOutfitModel
+from ..dependencies import get_token_header
 
-uri = "mongodb+srv://rootUser:iowastatemongo@main-xz1r5.mongodb.net/clothingDB?retryWrites=true&w=majority"
+uri = "mongodb+srv://rootUser:kgAFR6FP5JBzlT2n@main-xz1r5.mongodb.net/clothingDB?retryWrites=true&w=majority"
 client = motor.motor_asyncio.AsyncIOMotorClient(uri)
 db = client.clothingDB
 router = APIRouter(
-    prefix="/outfits",
-    tags=["outfits"],
+    prefix="/outfit",
+    tags=["outfit"],
+    dependencies=[Depends(get_token_header)],
 )
 
 
